@@ -9,12 +9,12 @@ gpForm.addEventListener('submit', (ev) => {
             const respElm = document.getElementById('bot_response')
 
             // create question span
-            const qNode = document.createElement('span')
+            const qNode = document.createElement('div')
             qNode.classList.add('question')
             qNode.innerText = queryTxt
 
             // create response span
-            let rNode = document.createElement('span')
+            let rNode = document.createElement('div')
             rNode.classList.add('answer')
             
             // create map div
