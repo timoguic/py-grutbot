@@ -3,6 +3,7 @@ import requests
 class Search:
     GEOCODE_URL = 'https://nominatim.openstreetmap.org/search'
     WIKI_SEARCH_URL = 'https://fr.wikipedia.org/w/api.php'
+    WIKI_URL = 'https://fr.wikipedia.org/?curid={}'
 
     NOT_FOUND = ('NOT_FOUND', 'NOT_FOUND')
 
@@ -17,9 +18,16 @@ class Search:
         coords = self._get_coords(self.input)
         output = {'coords': coords}
 
-        if coords:
-            wiki_pageid, wiki_url = self._get_wiki_info_from_coords(coords)
-            output.update({'wiki_url': wiki_url})
+        wiki_pageid = self._get_wiki_pageid_from_text(self.input)
+        if wiki_pageid:
+            wiki_extract = self._get_wiki_extract_from_pageid(wiki_pageid)
+            output.update({
+                'wiki_url': self.WIKI_URL.format(wiki_pageid),
+                'wiki_extract': wiki_extract}
+            )
+        elif coords:
+            wiki_pageid = self._get_wiki_pageid_from_coords(coords)
+            output.update({'wiki_url': self.WIKI_URL.format(wiki_pageid)})
             if wiki_pageid > 0:
                 wiki_extract = self._get_wiki_intro_from_pageid(wiki_pageid)
                 output.update({'wiki_extract': wiki_extract})
@@ -58,7 +66,28 @@ class Search:
                     return False
 
     @classmethod
-    def _get_wiki_info_from_coords(cls, coords):
+    def _get_wiki_pageid_from_text(cls, txt):
+        params = {
+            'action': 'query',
+            'list': 'search',
+            'srsearch': txt,
+            'srnamespace': 0,
+            'format': 'json',
+        }
+
+        r = requests.get(cls.WIKI_SEARCH_URL, params=params)
+        if r.status_code != 200:
+            return False
+        else:
+            resp = r.json()
+            if not len(resp['query']['search']):
+                return False
+            else:
+                return resp['query']['search'][0]['pageid']
+            
+
+    @classmethod
+    def _get_wiki_pageid_from_coords(cls, coords):
         params = {
             'action': "query",
             'list': "geosearch",
@@ -71,25 +100,25 @@ class Search:
         }
 
         r = requests.get(cls.WIKI_SEARCH_URL, params=params)
-        if r.status_code == 200:
+        if r.status_code != 200:
+            return False
+        else:
             resp = r.json()
 
             places = resp['query']['geosearch']
             for p in places:
                 if p['type'] == 'city':
-                    wiki_pageid = p['pageid']
-                    wiki_url = 'https://fr.wikipedia.org/?curid={}'.format(wiki_pageid)
-                    return wiki_pageid, wiki_url
-
-        return 0, False
+                    return p['pageid']
+                    
 
     @classmethod
-    def _get_wiki_intro_from_pageid(cls, pageid=None):
+    def _get_wiki_extract_from_pageid(cls, pageid=None):
         if pageid is not None:
             params = {
                 'action': 'query',
                 'prop': 'extracts',
                 'exintro': 1,
+                'exsentences': 4,
                 'explaintext': 1,
                 'redirects': 1,
                 'pageids': pageid,

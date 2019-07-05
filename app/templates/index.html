@@ -5,40 +5,39 @@
     <!--Import Google Icon Font-->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css" integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"
+        integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
         crossorigin="" />
 
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>GrandPy Bot</title>
     <style type='text/css'>
-        div.question {
-            width: 35%;
-            display: block;
-            float: right;
-            padding: 1%;
+        h1 {
+            font-size: 3rem;
+        }
+
+        h3 {
+            font-size: 2rem;
+        }
+
+        .question {
             background: #cccccc30;
             border: 1px solid #ccc;
-            clear: both;
-            margin-top: 1em;
+        }
+
+        .question p {
+            margin: 1em 0.5em;
         }
 
         div.answer {
-            width: 100%;
-            display: block;
-            padding: 1%;
-            border: 1px solid #ccc;
             background: #4caf5030;
-            margin-top: 1em;
-            clear: both;
+            border: 1px solid #ccc;
+            min-height: 250px;
         }
 
         .mapbox {
             height: 200px;
-            min-width: 40%;
-            max-width: 60%;
-            float: left;
-            margin-right: 2em;
         }
     </style>
 </head>
@@ -48,18 +47,22 @@
         <a href="#">GrandPyBot</a>
     </nav>
     <div class="container">
-        <section id="header">
-            <h3>Bonjour! Je suis GrandPy Bot.</h1>
-                <h5><i class="material-icons blue-text right">android</i>Que puis-je faire pour vous?</h5>
-        </section>
-        <section id="content">
-            <form id="grandpy_form">
-                <input class="left" type="text" name="query" required id="form_input_txt">
-                <button class="btn blue right" type="submit" id="form_submit_btn">
-                    Envoyer<i class="material-icons right">send</i>
-                </button>
-            </form>
-        </section>
+        <div class="row">
+            <div class="col s12">
+                <section id="header">
+                    <h1>Bonjour! Je suis GrandPy Bot.</h1>
+                    <h3><i class="material-icons blue-text right">android</i>Que puis-je faire pour vous?</h3>
+                </section>
+                <section id="content">
+                    <form id="grandpy_form">
+                        <input class="left" type="text" name="query" required id="form_input_txt">
+                        <button class="btn blue right" type="submit" id="form_submit_btn">
+                            Envoyer<i class="material-icons right">send</i>
+                        </button>
+                    </form>
+                </section>
+            </div>
+        </div>
         <section id="bot_response">
 
         </section>
@@ -67,7 +70,8 @@
     <!--JavaScript at end of body for optimized loading-->
     <script src="/static/js/grandpy.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-    <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js" integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
+    <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"
+        integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
         crossorigin=""></script>
 </body>
 
