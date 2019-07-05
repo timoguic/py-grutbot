@@ -1,15 +1,46 @@
 from app.utils.search import Search
+from app.utils.parser import Parser
+
+import requests
 
 class TestSearch:
     def setup(self):
-        self.paris = Search('paris france')
-        self.nowhere = Search('this is nowhere to be found')
+        self.paris = Search('paris france?')
 
-    def test_search_coords(self):
+    def test_search_coords(self, monkeypatch):
+        LATITUDE = 48.8566101
+        LONGITUDE = 2.3514992
+        
+        class MockResponseParis:
+            status_code = 200
+            def __init__(self, *args, **kwargs): pass
+            def json(self):
+                return [{'lat': LATITUDE, 'lon': LONGITUDE}]
+
+        monkeypatch.setattr(requests, 'get', MockResponseParis)
         assert self.paris._get_coords() == (48.8566101, 2.3514992)
-        assert self.nowhere._get_coords() == (0, 0)
 
-    def test_search_wiki(self):
-        paris = self.paris.search()
-        assert paris['wiki_url'] == 'https://fr.wikipedia.org/?curid=131365'
-        assert paris['wiki_extract'] == "La place de l'Hôtel-de-Ville - Esplanade de la Libération, ancienne place de Grève jusqu'en 1803, est une place de Paris, en France."
+    def test_search_wiki(self, monkeypatch):
+        PAGEID = 681159
+        class MockResponseWiki:
+            status_code = 200
+            def __init__(self, *args, **kwargs): pass
+            def json(self):
+                return {
+                    'query': {
+                        'geosearch': [
+                            {'type': 'city', 'pageid': PAGEID}
+                        ],
+                        'pages': {
+                            str(PAGEID): {'extract': 'Paris'}
+                        }
+                    }
+                }
+
+        monkeypatch.setattr(requests, 'get', MockResponseWiki)
+
+        wiki_info = Search._get_wiki_info_from_coords((48.8566101, 2.3514992))
+        assert wiki_info[1] == 'https://fr.wikipedia.org/?curid=681159'
+
+        wiki_extract = Search._get_wiki_intro_from_pageid(PAGEID)
+        assert 'Paris' in wiki_extract

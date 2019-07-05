@@ -12,11 +12,13 @@ def home():
 @app.route('/api')
 def api():
     query = request.args.get('query', None)
-    if not query:
-        return "Error: empty string", 404
 
-    return jsonify(
-        Search(
-            Parser(query).parse()
-        ).search()
-    )
+    parsed = Parser(query)
+    output = {'parsed': parsed}
+    if not parsed:
+        output.update({'message': 'Cannot parse query: {}'.format(query)})
+    else:
+        search = Search(parsed).process()
+        output.update(search)
+
+    return jsonify(output)
