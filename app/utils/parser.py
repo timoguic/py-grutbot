@@ -83,6 +83,6 @@ class Parser:
 
         relevant_nouns = [n for n in sentence.nouns if n.string not in stopwords]
         if len(relevant_nouns):
-            return relevant_nouns[0].chunk.string
+            return relevant_nouns[-1].chunk.string
         else:
             return False

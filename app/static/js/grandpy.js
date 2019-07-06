@@ -1,6 +1,20 @@
 let gpForm = document.getElementById('grandpy_form')
 let submitBtn = document.getElementById('form_submit_btn')
 
+function createRow(...extraClasses) {
+    const elm = document.createElement('div')
+    elm.classList.add('row')
+    extraClasses.forEach(cls => elm.classList.add(cls))
+    return elm
+}
+
+function createCol(...extraClasses) {
+    const elm = document.createElement('div')
+    elm.classList.add('col')
+    extraClasses.forEach(cls => elm.classList.add(cls))
+    return elm
+}
+
 gpForm.addEventListener('submit', (ev) => {
     let queryTxt = document.getElementById('form_input_txt').value
     fetch("/api?query=" + queryTxt)
@@ -10,24 +24,19 @@ gpForm.addEventListener('submit', (ev) => {
             const respElm = document.getElementById('bot_response')
 
             // create question node
-            const qNodeRow = document.createElement('div')
-            qNodeRow.classList.add('row')
-            const qNode = document.createElement('div')
-            qNode.classList.add('col', 's9', 'm6', 'question')
+            const qNodeRow = createRow()
+            const qNode = createCol('s9', 'm6', 'question')
             qNode.innerHTML = '<p>' + queryTxt + '</p>'
             qNodeRow.append(qNode)
 
             // create response span
-            const rNodeRow = document.createElement('div')
-            rNodeRow.classList.add('row')
+            const rNodeRow = createRow()
 
-            const rNode = document.createElement('div')
-            rNode.classList.add('col', 's11', 'offset-s1', 'm10', 'offset-m2', 'answer')
+            const rNode = createCol('s11', 'offset-s1', 'm10', 'offset-m2', 'answer')
             rNode.style.padding = "1em"
             rNodeRow.append(rNode)
 
-            let answerNodeWrapper = document.createElement('div')
-            answerNodeWrapper.classList.add('row')
+            let answerNodeWrapper = createRow()
             rNode.append(answerNodeWrapper)
 
             // insert question
@@ -38,13 +47,11 @@ gpForm.addEventListener('submit', (ev) => {
             if (data['parsed'] != false) {
 
                 if (data['coords'] != false) {
-                    // create map div
-                    let mapNode = document.createElement('div')
                     // use timestamp for unique ID
                     const mapid = Date.now().toString()
+                    // create map div
+                    const mapNode = createCol('mapbox', 's12', 'm4')
                     mapNode.id = mapid
-                    // fix height and width
-                    mapNode.classList.add('mapbox', 'col', 's12', 'm4')
                     
                     // add map node to response node
                     answerNodeWrapper.append(mapNode)
@@ -58,9 +65,8 @@ gpForm.addEventListener('submit', (ev) => {
 
                 // add response text to response node
                 introText = typeof data['wiki_extract'] !== 'undefined' ? data['wiki_extract'] : "<p>Désolé, je n'ai rien trouvé! :sad:</p>"
-                answerText = document.createElement('div')
+                answerText = createCol('s12', 'm8')
                 answerText.innerHTML = introText
-                answerText.classList.add('col', 's12', 'm8')
                 answerNodeWrapper.append(answerText)
                 
             } else {
