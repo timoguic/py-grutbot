@@ -76,8 +76,8 @@ class Parser:
         else:
             sentence = tree[0]
 
-        if not sentence.is_question:
-            return False
+        # if not sentence.is_question:
+        #     return False
         
         stopwords = cls._load_stopwords()
 

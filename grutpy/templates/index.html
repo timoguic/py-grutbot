@@ -12,34 +12,7 @@
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>GrandPy Bot</title>
-    <style type='text/css'>
-        h1 {
-            font-size: 3rem;
-        }
-
-        h3 {
-            font-size: 2rem;
-        }
-
-        .question {
-            background: #cccccc30;
-            border: 1px solid #ccc;
-        }
-
-        .question p {
-            margin: 1em 0.5em;
-        }
-
-        div.answer {
-            background: #4caf5030;
-            border: 1px solid #ccc;
-            min-height: 250px;
-        }
-
-        .mapbox {
-            height: 200px;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 
 <body>
@@ -68,11 +41,17 @@
         </section>
     </div>
     <!--JavaScript at end of body for optimized loading-->
-    <script src="/static/js/grandpy.js"></script>
+    <script src="{{ url_for('static', filename='js/grandpy.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"
         integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
         crossorigin=""></script>
+    {# <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
+    <script type="text/javascript" charset="utf-8">
+        var socket = io();
+        socket.on('connect', () => socket.emit('query', "c'est ou paris?"))
+        socket.on('more_data', () => submitData('arrete?'))
+    </script> #}
 </body>
 
 </html>

@@ -132,7 +132,7 @@ class Search:
                 return resp['query']['pages'][str(pageid)]['extract']
 
     def __str__(self):
-        return '<Search["{}", coords=({:2.4f}, {:2.4f})]>'.format(self.input, *self._get_coords())
+        return '<Search["{}", coords=({:2.4f}, {:2.4f})]>'.format(self.input, *self._get_coords(self.input))
         
 if __name__ == "__main__":
     paris = Search('paris france')

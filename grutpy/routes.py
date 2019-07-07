@@ -1,6 +1,5 @@
-from app import app
-from app.utils.parser import Parser
-from app.utils.search import Search
+from . import app
+from .utils import Parser, Search, Weather, Webcam
 from flask import render_template, request, jsonify
 
 @app.route('/')
@@ -19,6 +18,12 @@ def api():
         output.update({'message': 'Cannot parse query: {}'.format(query)})
     else:
         search = Search(parsed).process()
+        coords = search['coords']
+        weather = Weather(coords)
+        output.update(weather)
+        webcam = Webcam(coords[0], coords[1])
+        if webcam:
+            output.update(webcam)
         output.update(search)
 
     return jsonify(output)
