@@ -1,6 +1,7 @@
 from .parser import Parser
-from .search import Search
+from .wikisearch import WikiSearch
 from .weather import Weather
 from .webcam import Webcam
+from .geoloc import Geoloc
 
-__all__ = [Parser, Search, Weather, Webcam]
+__all__ = [Parser, WikiSearch, Weather, Webcam, Geoloc]

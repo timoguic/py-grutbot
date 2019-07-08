@@ -15,19 +15,18 @@ function createCol(...extraClasses) {
     return elm
 }
 
-function createWeatherNode(icon, temperature, description) {
+function createWeatherNode(weatherData) {
     // create image and text nodes
     const weatherText = document.createElement('h6')
     weatherText.classList.add('weather-description')
     // weatherText.append(document.createTextNode('Météo: '))
     
-    
     const weatherImg = document.createElement('img')
-    weatherImg.src = icon
+    weatherImg.src = weatherData['icon']
     weatherImg.classList.add('weather-icon')
 
     weatherText.append(weatherImg)
-    weatherText.append(document.createTextNode(temperature + '°C, ' + description))
+    weatherText.append(document.createTextNode(weatherData['temp'] + '°C, ' + weatherData['description']))
     
     return weatherText
 }
@@ -42,16 +41,49 @@ function createQuestionNode(txtVal) {
     return qNodeRow
 }
 
-function createMapDiv(mapId) {
+function createWikiDiv(wiki) {
+    introText = typeof wiki['extract'] !== 'undefined' ? wiki['extract'] : "<p>Désolé, je n'ai rien trouvé! :sad:</p>"
+    wikiDiv = document.createElement('div')
+    wikiDiv.innerHTML = introText
+    
+    return wikiDiv
+}
+
+function createWebcamDiv(webcam) {
+    const webcamDiv = document.createElement('div')
+    webcamDiv.classList.add('webcam')
+    
+    const webcamH6 = document.createElement('h6')
+    webcamH6.textContent = 'Webcam'
+    webcamDiv.append(webcamH6)
+    
+    const webcamImg = document.createElement('img')
+    webcamImg.src = webcam['img']
+    webcamDiv.append(webcamImg)
+    
+    const webcamP = document.createElement('p')
+    webcamP.innerText = webcam['location']
+    webcamP.classList.add('webcam-location')
+    webcamDiv.append(webcamP)
+
+    return webcamDiv
+}
+
+function createMapNode(mapId) {
+    const mapNodeWrapper = createCol('s12', 'm4')
+    
     // create map div
     const mapNode = document.createElement('div')
     mapNode.classList.add('mapbox')
     mapNode.id = mapId
 
-    return mapNode
+    mapNodeWrapper.append(mapNode)
+    return mapNodeWrapper
 }
 
-function updateMap(lat, lon, mapId) {
+function updateMap(coords, mapId) {
+    let lat = coords[0]
+    let lon = coords[1]
     // manipulate map
     const mymap = L.map(mapId).setView([lat, lon], 13)
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -63,6 +95,7 @@ function submitData(txtValue) {
     fetch("/api?query=" + txtValue)
         .then((resp) => resp.json())
         .then((data) => {
+            console.log(data)
             const respElm = document.getElementById('bot_response')
             
             // insert question
@@ -84,49 +117,24 @@ function submitData(txtValue) {
             
             if (data['parsed'] != false) {
     
-                if (data['coords'] != false) {
-                    // create wrapper
-                    mapNodeWrapper = createCol('s12', 'm4')
-                    answerNodeWrapper.append(mapNodeWrapper)
-                    
+                if (data['coords'] != false) {                    
                     // use timestamp for unique ID
                     const mapid = Date.now().toString()
-                    
-                    mapDiv = createMapDiv(mapid)
-                    mapNodeWrapper.append(mapDiv)
-                    updateMap(data['coords'][0], data['coords'][1], mapid)
-
-                    weatherDiv = createWeatherNode(
-                        data['weather_icon'],
-                        data['weather_temp'],
-                        data['weather_description']
-                    )
+                    // create wrapper
+                    mapNodeWrapper = createMapNode(mapid)
+                    weatherDiv = createWeatherNode(data['weather'])
                     mapNodeWrapper.append(weatherDiv)
+                    
+                    answerNodeWrapper.append(mapNodeWrapper)
+                    updateMap(data['coords'], mapid)
 
                 }
     
-                // add response text to response node
-                introText = typeof data['wiki_extract'] !== 'undefined' ? data['wiki_extract'] : "<p>Désolé, je n'ai rien trouvé! :sad:</p>"
                 answerText = createCol('s12', 'm8')
-                wikiDiv = document.createElement('div')
-                wikiDiv.innerHTML = introText
-                answerText.append(wikiDiv)
 
-                webcamDiv = document.createElement('div')
-                webcamDiv.classList.add('webcam')
-                webcamH6 = document.createElement('h6')
-                webcamH6.textContent = 'Webcam'
-                webcamDiv.append(webcamH6)
-                webcamImg = document.createElement('img')
-                webcamImg.src = data['webcam_img']
-                webcamDiv.append(webcamImg)
-                webcamP = document.createElement('p')
-                webcamP.innerText = data['webcam_location']
-                webcamP.classList.add('webcam-location')
-                webcamDiv.append(webcamP)
-
-                answerText.append(webcamDiv)
-
+                answerText.append(createWikiDiv(wiki))  
+                answerText.append(createWebcamDiv(webcam))
+                
                 answerNodeWrapper.append(answerText)
                 
             } else {
@@ -143,9 +151,3 @@ gpForm.addEventListener('submit', (ev) => {
     ev.preventDefault()
     return false
 })
-
-function init() {
-    submitData('los angeles?')
-}
-
-window.addEventListener('DOMContentLoaded', init, false)

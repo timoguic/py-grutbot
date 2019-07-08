@@ -15,6 +15,5 @@ if __name__ == "__main__":
             print("Sorry, not sorry.")
 
     else:
-        from grutpy import routes
-        from grutpy import app
+        from grutpy.web import app
         app.run(debug=True)
