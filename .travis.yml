@@ -5,7 +5,10 @@ python:
 install:
   - pip install pipenv
   - pipenv install
-  
+
+env:
+  - RAPID_API_KEY='dummy' OWM_API_KEY='dummy'
+
 # command to run tests
 script:
   - pytest
