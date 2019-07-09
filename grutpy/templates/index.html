@@ -20,7 +20,8 @@
         <div class="row">
             <div class="col s12">
                 <section id="header">
-                    <h3>Ici GrandpyBot. <i class="material-icons blue-text right">android</i>Que puis-je faire pour vous?</h3>
+                    <h3>Ici GrandpyBot. <i class="material-icons blue-text right">android</i>Que puis-je faire pour
+                        vous?</h3>
                 </section>
                 <section id="content">
                     <form id="grandpy_form">
@@ -36,6 +37,35 @@
 
         </section>
     </div>
+    <div id="chat_template" class="hide">
+        <div class="row">
+            <div class="col s11 offset-s1 m10 offset-m2 answer" style="padding: 1em;">
+                <div class="row">
+                    <div class="col s12 m4">
+                        <div class="mapbox">
+                        </div>
+                        <h6 class="weather-description">
+                            <img class="weather-icon">
+                        </h6>
+                    </div>
+                    <div class="col s12 m8">
+                        <div class="wiki"></div>
+                        <div class="webcam">
+                            <h6>Webcam</h6>
+                            <img class="webcam-img">
+                            <p class="webcam-location"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s9 m6 question">
+                <p></p>
+            </div>
+        </div>
+    </section>
+
     <!--JavaScript at end of body for optimized loading-->
     <script src="{{ url_for('static', filename='js/grandpy.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
