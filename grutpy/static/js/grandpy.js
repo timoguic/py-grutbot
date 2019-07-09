@@ -50,7 +50,7 @@ function submitData(txtValue) {
 
                 }
             } else {
-                answerNode.innerHTML = "<p>Désolé, je n'ai pas compris la question. C'en était une?</p>" + 
+                answerNode.querySelector('.question').innerHTML = "<p>Désolé, je n'ai pas compris la question. C'en était une?</p>" + 
                 "<pre><small>" + data['parsed'] + "</pre>"
             }
         })
