@@ -132,8 +132,8 @@ function submitData(txtValue) {
     
                 answerText = createCol('s12', 'm8')
 
-                answerText.append(createWikiDiv(wiki))  
-                answerText.append(createWebcamDiv(webcam))
+                answerText.append(createWikiDiv(data['wiki']))  
+                answerText.append(createWebcamDiv(data['webcam']))
                 
                 answerNodeWrapper.append(answerText)
                 
