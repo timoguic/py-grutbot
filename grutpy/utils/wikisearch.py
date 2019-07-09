@@ -14,8 +14,8 @@ class WikiSearch:
         self.input = txt
 
         if not coords:
-            geoloc = Geoloc(txt)
-            self.coords = geoloc.coords
+            coords = Geoloc(txt)
+            self.coords = coords
         else:
             self.coords = coords
 

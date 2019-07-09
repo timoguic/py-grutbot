@@ -3,7 +3,7 @@ import requests
 
 class TestSearch:
     def setup(self):
-        self.paris = WikiSearch('paris france?')
+        self.paris = WikiSearch('paris france?', coords=(99,99))
 
     def test_search_coords(self, monkeypatch):
         return True
