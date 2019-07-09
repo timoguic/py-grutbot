@@ -1,4 +1,4 @@
-from app.utils.parser import Parser
+from grutpy.utils import Parser
 
 class TestParser:
     def setup(self):

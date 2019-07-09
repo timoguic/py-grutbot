@@ -1,6 +1,4 @@
-from app.utils.search import Search
-from app.utils.parser import Parser
-
+from grutpy.utils import Search, Parser
 import requests
 
 class TestSearch:
