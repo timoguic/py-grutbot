@@ -5,6 +5,7 @@ verify_ssl = true
 
 [dev-packages]
 pytest = "*"
+black = "*"
 
 [packages]
 beautifulsoup4 = "==4.7.1"

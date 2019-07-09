@@ -2,13 +2,10 @@ import requests
 
 
 class Geoloc:
-    GEOCODE_URL = 'https://nominatim.openstreetmap.org/search'
-    
+    GEOCODE_URL = "https://nominatim.openstreetmap.org/search"
+
     def __new__(self, txt):
-        params = {
-            'q': txt,
-            'format': 'json',
-        }
+        params = {"q": txt, "format": "json"}
 
         r = requests.get(self.GEOCODE_URL, params=params)
         if r.status_code != 200:
@@ -20,8 +17,8 @@ class Geoloc:
             else:
                 resp = resp[0]
 
-                lat = resp.get('lat', None)
-                lng = resp.get('lon', None)
+                lat = resp.get("lat", None)
+                lng = resp.get("lon", None)
 
                 if lat and lng:
                     try:
